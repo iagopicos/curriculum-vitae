@@ -1,0 +1,16 @@
+- id: udc
+  order: 1
+  degree:
+    { es: Grado en Ingeniería Informática, en: B.Sc. in Computer Engineering }
+  institution: { es: Universidade da Coruña, en: University of A Coruña }
+  period: "2026"
+
+- id: erasmus
+  order: 2
+  degree: { es: Erasmus, en: Erasmus exchange }
+  institution:
+    {
+      es: Univerza v Mariboru · Eslovenia,
+      en: University of Maribor · Slovenia,
+    }
+  period: "2016 — 2017"

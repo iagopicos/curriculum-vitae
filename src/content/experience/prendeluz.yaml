@@ -6,6 +6,7 @@ location:
   es: Bergondo · híbrido
   en: Bergondo, Spain · hybrid
 start: 2024
+end: 2026
 highlights:
   - es: Desarrollo del backend en Go de un ERP propio, sobre MySQL, PostgreSQL y MongoDB.
     en: Built the Go backend of an in-house ERP, on top of MySQL, PostgreSQL and MongoDB.

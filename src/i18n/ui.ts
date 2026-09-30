@@ -5,7 +5,7 @@ export const es = {
     "nav.contact": "contacto",
     "nav.language": "Idioma",
 
-    "hero.subtitle": "Backend engineer · APIs, sistemas distribuidos y bases de datos",
+    "hero.subtitle": "Backend engineer · Go, Python y Elasticsearch",
     "hero.cta": "Ver experiencia",
 
     "section.about": "Sobre mí",
@@ -32,7 +32,7 @@ export const en: Record<UIKey, string> = {
     "nav.contact": "contact",
     "nav.language": "Language",
 
-    "hero.subtitle": "Backend engineer · APIs, distributed systems and databases",
+    "hero.subtitle": "Backend engineer · Go, Python and Elasticsearch",
     "hero.cta": "See experience",
 
     "section.about": "About",

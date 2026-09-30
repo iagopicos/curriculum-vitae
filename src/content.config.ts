@@ -53,6 +53,15 @@ const projects = defineCollection({
         site: z.string().optional(),
     }),
 });
+const education = defineCollection({
+    loader: file("src/content/education.yaml"),
+    schema: z.object({
+        order: z.number().int(),
+        degree: localized,
+        institution: localized,
+        period: z.string(),
+    }),
+});
 
-export const collections = { experience, stack, about, projects };
+export const collections = { experience, stack, about, projects, education };
 

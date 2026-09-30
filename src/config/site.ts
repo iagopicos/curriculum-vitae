@@ -4,4 +4,6 @@ export const site = {
     github: "https://github.com/iagopicos",
     linkedin: "https://www.linkedin.com/in/iagopicos",
     repo: "https://github.com/iagopicos/cv-web",
+    role: "Backend developer",
+    location: "Ferrol, A Coruña"
 } as const;

@@ -1,0 +1,507 @@
+---
+import { getCollection, getEntry } from "astro:content";
+import Base from "@/layouts/Base.astro";
+import { site } from "@/config/site";
+import { getLang, useTranslations } from "@/i18n/utils";
+
+const lang = getLang(Astro.currentLocale);
+const t = useTranslations(lang);
+
+const labels = {
+    es: {
+        profile: "Perfil",
+        experience: "Experiencia",
+        project: "Proyecto destacado",
+        contact: "Contacto",
+        stack: "Stack",
+        education: "Formación",
+        languages: "Idiomas",
+    },
+    en: {
+        profile: "Profile",
+        experience: "Experience",
+        project: "Featured project",
+        contact: "Contact",
+        stack: "Stack",
+        education: "Education",
+        languages: "Languages",
+    },
+}[lang];
+
+// Pon aquí tu nivel real de inglés
+const languages = {
+    es: [
+        ["Español", "nativo"],
+        ["Gallego", "nativo"],
+        ["Inglés", "B2"],
+    ],
+    en: [
+        ["Spanish", "native"],
+        ["Galician", "native"],
+        ["English", "B2"],
+    ],
+}[lang];
+
+const displayUrl = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "");
+
+function formatPeriod(start: number, end?: number) {
+    if (start === end) return `${start}`;
+    return `${start} — ${end ?? t("experience.present")}`;
+}
+
+const about = await getEntry("about", "main");
+if (!about)
+    throw new Error("Falta la entrada 'main' en src/content/about.yaml");
+const profile = about.data.paragraphs[0][lang];
+
+const jobs = (await getCollection("experience"))
+    .sort((a, b) => b.data.start - a.data.start)
+    .map((entry) => ({
+        date: formatPeriod(entry.data.start, entry.data.end),
+        role: entry.data.role[lang],
+        company: entry.data.company,
+        location: entry.data.location[lang],
+        highlights: entry.data.highlights.map((h) => h[lang]),
+    }));
+
+const projects = (await getCollection("projects"))
+    .sort((a, b) => a.data.order - b.data.order)
+    .map((entry) => ({
+        name: entry.data.name,
+        description: entry.data.description[lang],
+        tags: entry.data.tags,
+        link: entry.data.site ?? entry.data.repo,
+    }));
+
+const stack = (await getCollection("stack"))
+    .sort((a, b) => a.data.order - b.data.order)
+    .map((entry) => ({
+        label: entry.data.label[lang],
+        items: entry.data.items,
+    }));
+
+const education = (await getCollection("education"))
+    .sort((a, b) => a.data.order - b.data.order)
+    .map((entry) => ({
+        degree: entry.data.degree[lang],
+        institution: entry.data.institution[lang],
+        period: entry.data.period,
+    }));
+---
+
+<Base title={`${site.name} · CV`}>
+    <div class="cv-page">
+        <article class="cv-sheet">
+            <header class="cv-header">
+                <p class="cv-prompt">$ whoami</p>
+                <h1 class="cv-name">{site.name}</h1>
+                <p class="cv-role">{site.role}</p>
+            </header>
+
+            <div class="cv-body">
+                <div class="cv-main">
+                    <section class="cv-section">
+                        <h2 class="cv-title">
+                            <span>// 01</span> {labels.profile}
+                        </h2>
+                        <p class="cv-text">{profile}</p>
+                    </section>
+
+                    <section class="cv-section">
+                        <h2 class="cv-title">
+                            <span>// 02</span> {labels.experience}
+                        </h2>
+                        <div class="cv-timeline">
+                            {jobs.map((job) => (
+                                <article class="cv-job">
+                                    <p class="cv-meta">
+                                        <span class="cv-date">{job.date}</span>{" "}
+                                        · {job.location}
+                                    </p>
+                                    <h3 class="cv-job-title">
+                                        {job.role} · {job.company}
+                                    </h3>
+                                    <ul class="cv-highlights">
+                                        {job.highlights.map((h) => (
+                                            <li>{h}</li>
+                                        ))}
+                                    </ul>
+                                </article>
+                            ))}
+                        </div>
+                    </section>
+
+                    <section class="cv-section">
+                        <h2 class="cv-title">
+                            <span>// 03</span> {labels.project}
+                        </h2>
+                        {projects.map((project) => (
+                            <article class="cv-project">
+                                <h3 class="cv-job-title">
+                                    {project.name}
+                                    {project.link && (
+                                        <a href={project.link} class="cv-link">
+                                            {displayUrl(project.link)}
+                                        </a>
+                                    )}
+                                </h3>
+                                <p class="cv-text">{project.description}</p>
+                                <ul class="cv-tags">
+                                    {project.tags.map((tag) => (
+                                        <li>{tag}</li>
+                                    ))}
+                                </ul>
+                            </article>
+                        ))}
+                    </section>
+                </div>
+
+                <aside class="cv-side">
+                    <section class="cv-section">
+                        <h2 class="cv-side-title">{labels.contact}</h2>
+                        <ul class="cv-list">
+                            <li>{site.location}</li>
+                            <li>
+                                <a
+                                    href={`mailto:${site.email}`}
+                                    class="cv-email"
+                                >
+                                    {site.email}
+                                </a>
+                            </li>
+                            <li>
+                                <a href={site.github}>
+                                    {displayUrl(site.github)}
+                                </a>
+                            </li>
+                            <li>
+                                <a href={site.linkedin}>
+                                    {displayUrl(site.linkedin)}
+                                </a>
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section class="cv-section">
+                        <h2 class="cv-side-title">{labels.stack}</h2>
+                        {stack.map((group) => (
+                            <div class="cv-group">
+                                <p class="cv-group-label">{group.label}</p>
+                                <ul class="cv-tags">
+                                    {group.items.map((item) => (
+                                        <li>{item}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
+                    </section>
+
+                    <section class="cv-section">
+                        <h2 class="cv-side-title">{labels.education}</h2>
+                        {education.map((item) => (
+                            <div class="cv-group">
+                                <p class="cv-date">{item.period}</p>
+                                <p class="cv-strong">{item.degree}</p>
+                                <p class="cv-muted">{item.institution}</p>
+                            </div>
+                        ))}
+                    </section>
+
+                    <section class="cv-section">
+                        <h2 class="cv-side-title">{labels.languages}</h2>
+                        <ul class="cv-list">
+                            {languages.map(([name, level]) => (
+                                <li>
+                                    <span class="cv-strong">{name}</span> ·{" "}
+                                    {level}
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+                </aside>
+            </div>
+        </article>
+    </div>
+</Base>
+
+<style lang="scss">
+    @page {
+        size: A4;
+        margin: 0;
+    }
+
+    .cv-page {
+        min-height: 100vh;
+        padding: 48px 16px;
+        background: #d6d3d1;
+    }
+
+    .cv-sheet {
+        --ink: #1c1917;
+        --muted: #57534e;
+        --accent: #c4402c;
+        --line: #e2ddd9;
+        --side-bg: #f6f4f2;
+        --tag-bg: #fbe9e6;
+        --tag-ink: #9f3322;
+
+        display: flex;
+        flex-direction: column;
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0 auto;
+        background: #ffffff;
+        color: var(--ink);
+        font-family: "Rethink Sans", sans-serif;
+        font-size: 9pt;
+        line-height: 1.4;
+        font-variant-ligatures: none;
+        box-shadow: 0 4px 24px rgb(0 0 0 / 0.2);
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+    }
+
+    /* Cabecera */
+
+    .cv-header {
+        padding: 10mm 14mm 6mm;
+        border-bottom: 1.5pt solid var(--accent);
+    }
+
+    .cv-prompt {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 8.5pt;
+        color: var(--accent);
+    }
+
+    .cv-name {
+        font-size: 24pt;
+        font-weight: 600;
+        line-height: 1.15;
+    }
+
+    .cv-role {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10.5pt;
+        color: var(--muted);
+    }
+
+    /* Dos columnas */
+
+    .cv-body {
+        flex: 1;
+        display: flex;
+    }
+
+    .cv-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 5mm;
+        padding: 6mm 8mm 8mm 14mm;
+    }
+
+    .cv-side {
+        flex: none;
+        width: 64mm;
+        display: flex;
+        flex-direction: column;
+        gap: 5mm;
+        padding: 6mm 8mm 8mm 7mm;
+        background: var(--side-bg);
+    }
+
+    /* Secciones */
+
+    .cv-section {
+        display: flex;
+        flex-direction: column;
+        gap: 2.5mm;
+    }
+
+    .cv-title {
+        font-size: 12pt;
+        font-weight: 600;
+
+        span {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 8.5pt;
+            font-weight: 400;
+            color: var(--accent);
+        }
+    }
+
+    .cv-side-title {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 8.5pt;
+        font-weight: 400;
+        color: var(--accent);
+        text-transform: lowercase;
+
+        &::before {
+            content: "// ";
+        }
+    }
+
+    .cv-text {
+        color: var(--muted);
+    }
+
+    /* Experiencia */
+
+    .cv-timeline {
+        display: flex;
+        flex-direction: column;
+        gap: 3.5mm;
+        padding-left: 4mm;
+        border-left: 1pt solid var(--line);
+    }
+
+    .cv-job,
+    .cv-project {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2mm;
+    }
+
+    .cv-meta {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 7.5pt;
+        color: var(--muted);
+    }
+
+    .cv-date {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 7.5pt;
+        color: var(--accent);
+    }
+
+    .cv-job-title {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 2mm;
+        font-size: 10.5pt;
+        font-weight: 600;
+    }
+
+    .cv-link {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 7.5pt;
+        font-weight: 400;
+        color: var(--accent);
+    }
+
+    .cv-highlights {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6mm;
+        color: var(--muted);
+
+        li {
+            display: flex;
+            gap: 1.8mm;
+
+            &::before {
+                content: "›";
+                flex: none;
+                color: var(--accent);
+            }
+        }
+    }
+
+    /* Badges */
+
+    .cv-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5mm;
+
+        li {
+            padding: 0.4mm 1.8mm;
+            border-radius: 1mm;
+            background: var(--tag-bg);
+            color: var(--tag-ink);
+            font-family: "JetBrains Mono", monospace;
+            font-size: 7pt;
+        }
+    }
+
+    /* Barra lateral */
+
+    .cv-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2mm;
+        font-size: 8.5pt;
+        color: var(--muted);
+    }
+
+    .cv-email {
+        white-space: nowrap;
+    }
+
+    .cv-group {
+        display: flex;
+        flex-direction: column;
+        gap: 1mm;
+    }
+
+    .cv-group-label {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 7.5pt;
+        color: var(--muted);
+    }
+
+    .cv-strong {
+        font-weight: 600;
+        color: var(--ink);
+    }
+
+    .cv-muted {
+        font-size: 8.5pt;
+        color: var(--muted);
+    }
+
+    /* Impresión */
+
+    @media print {
+        :global(html),
+        :global(body) {
+            display: block;
+            height: auto;
+            min-height: 0;
+            margin: 0;
+            padding: 0;
+            overflow: visible;
+            background: #ffffff;
+        }
+
+        :global(astro-dev-toolbar) {
+            display: none;
+        }
+
+        .cv-page {
+            min-height: auto;
+            padding: 0;
+            background: none;
+        }
+
+        .cv-sheet {
+            min-height: 296mm;
+            margin: 0;
+            box-shadow: none;
+        }
+    }
+</style>
