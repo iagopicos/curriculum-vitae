@@ -1,27 +1,28 @@
 ---
+import { getCollection } from "astro:content";
 import SectionTitle from "@/components/SectionTitle.astro";
-import ExperienceItem from "../ExperienceItem.astro";
+import ExperienceItem from "@/components/ExperienceItem.astro";
 import { getLang, useTranslations } from "@/i18n/utils";
-const t = useTranslations(getLang(Astro.currentLocale));
 
-const jobs = [
-    {
-        date: "2022 — hoy",
-        role: "Senior Backend Engineer",
-        company: "Empresa X",
-        achievement:
-            "Reduje la latencia p95 de la API de pedidos de 800 ms a 120 ms.",
-        tags: ["go", "postgresql", "python"],
-    },
-    {
-        date: "2019 — 2022",
-        role: "Backend Developer",
-        company: "Empresa Y",
-        achievement:
-            "Diseñé el sistema de colas que procesa 2 millones de eventos al día.",
-        tags: ["java", "kafka", "docker"],
-    },
-];
+const lang = getLang(Astro.currentLocale);
+const t = useTranslations(lang);
+
+const entries = await getCollection("experience");
+entries.sort((a, b) => b.data.start - a.data.start);
+
+function formatPeriod(start: number, end?: number) {
+    if (start === end) return `${start}`;
+    return `${start} — ${end ?? t("experience.present")}`;
+}
+
+const jobs = entries.map((entry) => ({
+    date: formatPeriod(entry.data.start, entry.data.end),
+    role: entry.data.role[lang],
+    company: entry.data.company,
+    location: entry.data.location[lang],
+    highlights: entry.data.highlights.map((h) => h[lang]),
+    tags: entry.data.tags,
+}));
 ---
 
 <section id="experience" class="experience container">

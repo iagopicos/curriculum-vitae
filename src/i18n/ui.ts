@@ -14,7 +14,11 @@ export const es = {
     "section.stack": "Stack",
     "section.contact": "Contacto",
 
+    "experience.present": "hoy",
+
+    "project.site": "-> ver web",
     "project.repo": "→ ver repositorio",
+
     "contact.text": "¿Tienes un proyecto o una vacante interesante? Escríbeme y hablamos.",
     "footer.madeWith": "hecho con Astro",
 } as const;
@@ -37,6 +41,9 @@ export const en: Record<UIKey, string> = {
     "section.stack": "Stack",
     "section.contact": "Contact",
 
+    "experience.present": "today",
+
+    "project.site": "-> ver web",
     "project.repo": "→ view repository",
     "contact.text": "Have a project or an interesting role? Drop me a line.",
     "footer.madeWith": "built with Astro",

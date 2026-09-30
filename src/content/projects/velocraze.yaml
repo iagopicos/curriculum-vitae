@@ -1,0 +1,11 @@
+name: velocraze
+order: 1
+description:
+  es: >-
+    Marketplace de e-commerce con gamificación, desarrollado en Prendeluz. Construí en Go el
+    backend del índice de Elasticsearch y Solver, la herramienta de recomendación de productos.
+  en: >-
+    Gamified e-commerce marketplace, built at Prendeluz. I built the Go backend for its
+    Elasticsearch index and Solver, its product recommendation feature.
+tags: [go, elasticsearch]
+site: https://velocraze.com

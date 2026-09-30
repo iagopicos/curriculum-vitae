@@ -8,9 +8,10 @@ import Projects from "@/components/sections/Projects.astro";
 import Stack from "@/components/sections/Stack.astro";
 import Contact from "@/components/sections/Contact.astro";
 import Footer from "@/components/sections/Footer.astro";
+import { site } from "@/config/site";
 ---
 
-<Base title="Iago Fernández Picos · Backend engineer">
+<Base title=`${site.name} · Backend engineer` `>
     <Nav />
     <main>
         <Hero />

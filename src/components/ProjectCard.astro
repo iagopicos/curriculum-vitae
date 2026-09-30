@@ -9,9 +9,10 @@ interface Props {
     description: string;
     tags: string[];
     repo?: string;
+    site?: string;
 }
 
-const { name, description, tags, repo } = Astro.props;
+const { name, description, tags, repo, site } = Astro.props;
 ---
 
 <article class="project-card">
@@ -23,16 +24,29 @@ const { name, description, tags, repo } = Astro.props;
             <Badge label={tag} />
         ))}
     </div>
-
-    {repo && (
-        <a
-            href={repo}
-            class="t-mono-sm c-accent"
-            target="_blank"
-            rel="noopener noreferrer"
-        >
-            {t("project.repo")}
-        </a>
+    {(repo || site) && (
+        <div class="links">
+            {site && (
+                <a
+                    href={site}
+                    class="t-mono-sm c-accent"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {t("project.site")}
+                </a>
+            )}
+            {repo && (
+                <a
+                    href={repo}
+                    class="t-mono-sm c-accent"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {t("project.repo")}
+                </a>
+            )}
+        </div>
     )}
 </article>
 
@@ -55,5 +69,11 @@ const { name, description, tags, repo } = Astro.props;
         display: flex;
         flex-wrap: wrap;
         gap: var(--space-8);
+    }
+    .links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-16);
+        margin-top: auto;
     }
 </style>

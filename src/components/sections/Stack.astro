@@ -2,14 +2,18 @@
 import Badge from "@/components/Badge.astro";
 import SectionTitle from "../SectionTitle.astro";
 import { getLang, useTranslations } from "@/i18n/utils";
+import { getCollection } from "astro:content";
 
-const t = useTranslations(getLang(Astro.currentLocale));
-const groups = [
-    { label: "lenguajes", items: ["go", "java", "python"] },
-    { label: "datos", items: ["postgresql", "redis", "mongodb"] },
-    { label: "infra", items: ["docker", "k8s", "terraform"] },
-    { label: "herramientas", items: ["git", "grafana", "github actions"] },
-];
+const lang = getLang(Astro.currentLocale);
+const t = useTranslations(lang);
+
+const entries = await getCollection("stack");
+entries.sort((a, b) => a.data.order - b.data.order);
+
+const groups = entries.map((entry) => ({
+    label: entry.data.label[lang],
+    items: entry.data.items,
+}));
 ---
 
 <section id="stack" class="stack container">

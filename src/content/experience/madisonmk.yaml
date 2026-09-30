@@ -1,0 +1,17 @@
+company: MadisonMK
+role:
+  es: Junior Developer
+  en: Junior Developer
+location:
+  es: Valladolid · remoto
+  en: Valladolid, Spain · remote
+start: 2021
+end: 2023
+highlights:
+  - es: APIs REST con Python y Flask sobre MySQL.
+    en: REST APIs with Python and Flask on MySQL.
+  - es: Scripts de mantenimiento y actualización de la base de datos.
+    en: Database maintenance and update scripts.
+  - es: Nuevas funcionalidades y corrección de errores, incluido el frontend en Vue.js.
+    en: New features and bug fixes across the stack, including a Vue.js frontend.
+tags: [python, flask, mysql, vue.js]

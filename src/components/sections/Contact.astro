@@ -1,8 +1,7 @@
 ---
 import SectionTitle from "@/components/SectionTitle.astro";
 import Button from "@/components/Button.astro";
-
-const email = "iagopicosdeveloper@gmail.com";
+import { site } from "@/config/site";
 import { getLang, useTranslations } from "@/i18n/utils";
 
 const t = useTranslations(getLang(Astro.currentLocale));
@@ -16,17 +15,13 @@ const t = useTranslations(getLang(Astro.currentLocale));
             ¿Tienes un proyecto o una vacante interesante? Escríbeme y hablamos.
         </p>
 
-        <a href={`mailto:${email}`} class="email t-section c-accent">
-            {email}
+        <a href={`mailto:${site.email}`} class="email t-section c-accent">
+            {site.email}
         </a>
 
         <div class="contact-links">
-            <Button label="GitHub" href="https://github.com" type="secondary" />
-            <Button
-                label="LinkedIn"
-                href="https://linkedin.com"
-                type="secondary"
-            />
+            <Button label="GitHub" href={site.github} type="secondary" />
+            <Button label="LinkedIn" href={site.linkedin} type="secondary" />
         </div>
     </div>
 </section>

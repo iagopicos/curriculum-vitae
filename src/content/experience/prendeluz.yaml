@@ -1,0 +1,31 @@
+company: Prendeluz
+role:
+  es: Software Developer
+  en: Software Developer
+location:
+  es: Bergondo · híbrido
+  en: Bergondo, Spain · hybrid
+start: 2024
+highlights:
+  - es: Desarrollo del backend en Go de un ERP propio, sobre MySQL, PostgreSQL y MongoDB.
+    en: Built the Go backend of an in-house ERP, on top of MySQL, PostgreSQL and MongoDB.
+  - es: Desarrollo en Go del backend del índice de Elasticsearch de Velocraze, un marketplace de e-commerce con gamificación.
+    en: Built in Go the Elasticsearch index backend for Velocraze, a gamified e-commerce marketplace.
+  - es: Desarrollo de Solver, la herramienta de Velocraze que recomienda productos a partir de escenarios creados por los usuarios.
+    en: Built Solver, Velocraze's feature that recommends products based on user-created scenarios.
+  - es: Participación en las decisiones de arquitectura de los servicios.
+    en: Took part in the architecture decisions for the company's services.
+  - es: Despliegues con Jenkins y Docker; herramientas en Python y frontend con React, Next.js y TypeScript.
+    en: Deployments with Jenkins and Docker; Python tooling and a React, Next.js and TypeScript frontend.
+tags:
+  [
+    go,
+    elasticsearch,
+    python,
+    typescript,
+    mysql,
+    postgresql,
+    mongodb,
+    docker,
+    jenkins,
+  ]

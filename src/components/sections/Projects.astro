@@ -2,29 +2,20 @@
 import SectionTitle from "@/components/SectionTitle.astro";
 import ProjectCard from "../ProjectCard.astro";
 import { getLang, useTranslations } from "@/i18n/utils";
+import { getCollection } from "astro:content";
 
-const t = useTranslations(getLang(Astro.currentLocale));
-const projects = [
-    {
-        name: "event-processor",
-        description:
-            "Servicio de procesamiento de eventos en tiempo real con reintentos y dead-letter queue.",
-        tags: ["go", "kafka", "docker"],
-        repo: "https://github.com",
-    },
-    {
-        name: "internal-billing",
-        description: "Sistema de facturación interno. Código privado.",
-        tags: ["java", "postgresql"],
-    },
-    {
-        name: "rate-limiter",
-        description:
-            "Librería de rate limiting distribuido con Redis y algoritmo token bucket.",
-        tags: ["go", "redis"],
-        repo: "https://github.com",
-    },
-];
+const lang = getLang(Astro.currentLocale);
+const t = useTranslations(lang);
+const entries = await getCollection("projects");
+entries.sort((a, b) => a.data.order - b.data.order);
+
+const projects = entries.map((entry) => ({
+    name: entry.data.name,
+    description: entry.data.description[lang],
+    tags: entry.data.tags,
+    repo: entry.data.repo,
+    site: entry.data.site,
+}));
 ---
 
 <section id="projects" class="projects container">

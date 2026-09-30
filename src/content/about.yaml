@@ -1,0 +1,50 @@
+- id: main
+  paragraphs:
+    - es: >-
+        Soy ingeniero informático y desarrollador backend. Trabajo sobre todo con Go y Python,
+        construyendo APIs y servicios, y tengo experiencia en motores de búsqueda con Elasticsearch,
+        desde mis inicios en Empathy.co hasta hoy.
+      en: >-
+        I'm a software engineer focused on backend development. I work mostly with Go and Python,
+        building APIs and services, and I have hands-on experience with search engines on
+        Elasticsearch, from my early days at Empathy.co to today.
+    - es: >-
+        En mi último puesto, en Prendeluz, desarrollé el backend de un ERP propio y participé en
+        la creación de Velocraze, un marketplace de e-commerce, donde construí el backend del
+        índice de Elasticsearch y la herramienta Solver. También participé en las decisiones de
+        arquitectura y en los despliegues con Docker y Jenkins.
+      en: >-
+        Most recently, at Prendeluz, I built the backend of an in-house ERP and helped create
+        Velocraze, an e-commerce marketplace, building its Elasticsearch index backend and the
+        Solver feature. I also took part in architecture decisions and deployments with Docker
+        and Jenkins.
+
+  facts:
+    - label: { es: experiencia, en: experience }
+      value: { es: +5 años, en: 5+ years }
+    - label: { es: stack principal, en: main stack }
+      value:
+        { es: Go · Python · Elasticsearch, en: Go · Python · Elasticsearch }
+    - label: { es: formación, en: education }
+      value:
+        {
+          es: Ingeniería Informática · UDC,
+          en: B.Sc. Computer Engineering · UDC,
+        }
+    - label: { es: erasmus, en: erasmus }
+      value:
+        {
+          es: Univerza v Mariboru · Eslovenia,
+          en: University of Maribor · Slovenia,
+        }
+    - label: { es: disponibilidad, en: availability }
+      value:
+        {
+          es: Inmediata · remoto,
+          híbrido o presencial,
+          en: Immediate · remote,
+          hybrid or on-site,
+        }
+    - label: { es: idiomas, en: languages }
+      value:
+        { es: Español · Gallego · Inglés, en: Spanish · Galician · English }

@@ -5,11 +5,12 @@ interface Props {
     date: string;
     role: string;
     company: string;
-    achievement: string;
+    location: string;
+    highlights: string[];
     tags: string[];
 }
 
-const { date, role, company, achievement, tags } = Astro.props;
+const { date, role, company, location, highlights, tags } = Astro.props;
 ---
 
 <article class="experience-item">
@@ -17,7 +18,12 @@ const { date, role, company, achievement, tags } = Astro.props;
     <h3 class="t-item">
         {role} · {company}
     </h3>
-    <p class="t-body-sm c-muted">{achievement}</p>
+    <p class="t-body-sm c-muted">{location}</p>
+    <ul class="highlights t-body-sm c-muted">
+        {highlights.map((highlight) => (
+            <li>{highlight}</li>
+        ))}
+    </ul>
 
     <div class="badges">
         {tags.map((tag) => (
@@ -41,5 +47,12 @@ const { date, role, company, achievement, tags } = Astro.props;
         display: flex;
         flex-wrap: wrap;
         gap: var(--space-8);
+    }
+    .highlights {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+        padding-left: var(--space-16);
+        list-style: disc;
     }
 </style>

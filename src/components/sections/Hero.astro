@@ -1,20 +1,21 @@
 ---
 import Button from "../Button.astro";
 import { getLang, useTranslations } from "@/i18n/utils";
+import { site } from "@/config/site";
 const t = useTranslations(getLang(Astro.currentLocale));
 ---
 
 <section class="hero container">
     <div class="intro">
         <p class="t-mono c-accent">$ whoami</p>
-        <h1 class="t-hero">Iago Fernández Picos</h1>
+        <h1 class="t-hero">{site.name}</h1>
         <p class="t-body-lg c-muted">{t("hero.subtitle")}</p>
     </div>
 
     <div class="actions">
         <Button label={t("hero.cta")} href="#experiencia" />
-        <Button label="GitHub" href="https://github.com" type="secondary" />
-        <Button label="LinkedIn" href="https://linkedin.com" type="secondary" />
+        <Button label="GitHub" href={site.github} type="secondary" />
+        <Button label="LinkedIn" href={site.linkedin} type="secondary" />
     </div>
 </section>
 

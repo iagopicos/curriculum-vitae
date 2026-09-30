@@ -1,0 +1,19 @@
+- id: languages
+  order: 1
+  label: { es: lenguajes, en: languages }
+  items: [go, python, typescript, java]
+
+- id: data
+  order: 2
+  label: { es: datos, en: data }
+  items: [mysql, postgresql, mongodb, elasticsearch]
+
+- id: infra
+  order: 3
+  label: { es: infra, en: infra }
+  items: [docker, jenkins, git]
+
+- id: frontend
+  order: 4
+  label: { es: frontend, en: frontend }
+  items: [react, next.js, vue.js]

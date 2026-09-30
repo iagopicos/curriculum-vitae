@@ -1,0 +1,17 @@
+company: Empathy.co
+role:
+  es: Junior Search Engineer
+  en: Junior Search Engineer
+location:
+  es: Narón
+  en: Narón, Spain
+start: 2019
+end: 2020
+highlights:
+  - es: Desarrollo y mantenimiento del proceso de creación y actualización de índices en Elasticsearch.
+    en: Developed and maintained the Elasticsearch index creation and update pipeline.
+  - es: Motores de búsqueda con Java, Elasticsearch y Apache Solr.
+    en: Search engines with Java, Elasticsearch and Apache Solr.
+  - es: Proyecto inicial en Python y Flask.
+    en: Initial project in Python and Flask.
+tags: [java, elasticsearch, solr, python, mongodb, docker]
