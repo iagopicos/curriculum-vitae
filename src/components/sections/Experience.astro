@@ -1,0 +1,48 @@
+---
+import SectionTitle from "@/components/SectionTitle.astro";
+import ExperienceItem from "../ExperienceItem.astro";
+import { getLang, useTranslations } from "@/i18n/utils";
+const t = useTranslations(getLang(Astro.currentLocale));
+
+const jobs = [
+    {
+        date: "2022 — hoy",
+        role: "Senior Backend Engineer",
+        company: "Empresa X",
+        achievement:
+            "Reduje la latencia p95 de la API de pedidos de 800 ms a 120 ms.",
+        tags: ["go", "postgresql", "python"],
+    },
+    {
+        date: "2019 — 2022",
+        role: "Backend Developer",
+        company: "Empresa Y",
+        achievement:
+            "Diseñé el sistema de colas que procesa 2 millones de eventos al día.",
+        tags: ["java", "kafka", "docker"],
+    },
+];
+---
+
+<section id="experience" class="experience container">
+    <SectionTitle num={2} title={t("section.experience")} />
+    <div class="timeline">
+        {jobs.map((job) => (
+            <ExperienceItem {...job} />
+        ))}
+    </div>
+</section>
+
+<style lang="scss">
+    @use "../../styles/_mixins.scss" as *;
+    .experience {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-32);
+        padding-top: var(--space-96);
+    }
+    .timeline {
+        display: flex;
+        flex-direction: column;
+    }
+</style>

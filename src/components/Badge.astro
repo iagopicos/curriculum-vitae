@@ -1,0 +1,21 @@
+---
+interface Props {
+    label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<span class="badge t-mono-sm">{label}</span>
+
+<style lang="scss">
+    .badge {
+        display: inline-flex;
+        padding: var(--space-4) var(--space-8);
+        white-space: nowrap;
+
+        background: var(--accent-soft);
+        border-radius: var(--radius-sm);
+        color: var(--accent-on-soft);
+    }
+</style>

@@ -1,0 +1,70 @@
+@use "mixins" as *;
+
+// hero/name + hero/name-mobile
+.t-hero {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 56px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+
+  @include mobile {
+    font-size: 40px;
+  }
+}
+
+// heading/section
+.t-section {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+// heading/item
+.t-item {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+// body/large
+.t-body-lg {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+// body/default
+.t-body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+// body/small
+.t-body-sm {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+// mono/default
+.t-mono {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+// mono/small
+.t-mono-sm {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.4;
+}

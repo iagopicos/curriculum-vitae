@@ -1,0 +1,31 @@
+---
+// Fuentes: un import por cada peso que usamos
+import "@fontsource/rethink-sans/400.css";
+import "@fontsource/rethink-sans/500.css";
+import "@fontsource/rethink-sans/600.css";
+import "@fontsource/jetbrains-mono/400.css";
+import { getLang } from "@/i18n/utils";
+
+// Tus estilos globales
+import "../styles/global.scss";
+
+// Props de la plantilla
+interface Props {
+    title: string;
+}
+
+const { title } = Astro.props;
+const lang = getLang(Astro.currentLocale);
+---
+
+<!doctype html>
+<html lang={lang}>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{title}</title>
+    </head>
+    <body>
+        <slot />
+    </body>
+</html>

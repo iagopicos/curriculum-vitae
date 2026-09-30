@@ -1,0 +1,30 @@
+---
+const year = new Date().getFullYear();
+import { getLang, useTranslations } from "@/i18n/utils";
+const t = useTranslations(getLang(Astro.currentLocale));
+---
+
+<footer class="footer container">
+    <p class="t-mono-sm c-muted">© {year} Iago Fernández Picos</p>
+    <p class="t-mono-sm c-muted">
+        {t("footer.madeWith")} · <a href="/cv.json">/cv.json</a>
+    </p>
+</footer>
+
+<style lang="scss">
+    @use "../../styles/_mixins.scss" as *;
+
+    .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--space-8);
+        padding-block: var(--space-32);
+        border-top: 1px solid var(--border-default);
+
+        @include mobile {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>

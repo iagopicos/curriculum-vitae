@@ -1,0 +1,56 @@
+---
+import SectionTitle from "@/components/SectionTitle.astro";
+import ProjectCard from "../ProjectCard.astro";
+import { getLang, useTranslations } from "@/i18n/utils";
+
+const t = useTranslations(getLang(Astro.currentLocale));
+const projects = [
+    {
+        name: "event-processor",
+        description:
+            "Servicio de procesamiento de eventos en tiempo real con reintentos y dead-letter queue.",
+        tags: ["go", "kafka", "docker"],
+        repo: "https://github.com",
+    },
+    {
+        name: "internal-billing",
+        description: "Sistema de facturación interno. Código privado.",
+        tags: ["java", "postgresql"],
+    },
+    {
+        name: "rate-limiter",
+        description:
+            "Librería de rate limiting distribuido con Redis y algoritmo token bucket.",
+        tags: ["go", "redis"],
+        repo: "https://github.com",
+    },
+];
+---
+
+<section id="projects" class="projects container">
+    <SectionTitle num={3} title={t("section.projects")} />
+    <div class="projects-grid">
+        {projects.map((project) => (
+            <ProjectCard {...project} />
+        ))}
+    </div>
+</section>
+
+<style lang="scss">
+    @use "../../styles/_mixins.scss" as *;
+    .projects {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-32);
+        padding-top: var(--space-96);
+    }
+    .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-24);
+
+        @include mobile {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

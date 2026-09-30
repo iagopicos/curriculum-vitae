@@ -1,0 +1,63 @@
+---
+import Badge from "@/components/Badge.astro";
+import SectionTitle from "../SectionTitle.astro";
+import { getLang, useTranslations } from "@/i18n/utils";
+
+const t = useTranslations(getLang(Astro.currentLocale));
+const groups = [
+    { label: "lenguajes", items: ["go", "java", "python"] },
+    { label: "datos", items: ["postgresql", "redis", "mongodb"] },
+    { label: "infra", items: ["docker", "k8s", "terraform"] },
+    { label: "herramientas", items: ["git", "grafana", "github actions"] },
+];
+---
+
+<section id="stack" class="stack container">
+    <SectionTitle num={4} title={t("section.stack")} />
+
+    <div class="stack-grid">
+        {groups.map((group) => (
+            <div class="stack-group">
+                <h3 class="t-mono-sm c-muted">{group.label}</h3>
+                <div class="badges">
+                    {group.items.map((item) => (
+                        <Badge label={item} />
+                    ))}
+                </div>
+            </div>
+        ))}
+    </div>
+</section>
+
+<style lang="scss">
+    @use "../../styles/mixins" as *;
+
+    .stack {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-32);
+        padding-top: var(--space-96);
+    }
+
+    .stack-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--space-24);
+
+        @include mobile {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .stack-group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-12);
+    }
+
+    .badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-8);
+    }
+</style>

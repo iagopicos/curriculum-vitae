@@ -1,0 +1,45 @@
+---
+import Badge from "@/components/Badge.astro";
+
+interface Props {
+    date: string;
+    role: string;
+    company: string;
+    achievement: string;
+    tags: string[];
+}
+
+const { date, role, company, achievement, tags } = Astro.props;
+---
+
+<article class="experience-item">
+    <span class="t-mono-sm c-accent">{date}</span>
+    <h3 class="t-item">
+        {role} · {company}
+    </h3>
+    <p class="t-body-sm c-muted">{achievement}</p>
+
+    <div class="badges">
+        {tags.map((tag) => (
+            <Badge label={tag} />
+        ))}
+    </div>
+</article>
+
+<style lang="scss">
+    .experience-item {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-8);
+        max-width: 640px;
+        padding: 0 0 var(--space-32) var(--space-16);
+        border-left: 1px solid var(--border-default);
+    }
+
+    .badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-8);
+    }
+</style>

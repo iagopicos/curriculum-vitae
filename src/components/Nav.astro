@@ -1,0 +1,188 @@
+---
+import { getLang, useTranslations } from "@/i18n/utils";
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+interface NavLink {
+    href: string;
+    label: string;
+}
+const lang = getLang(Astro.currentLocale);
+const t = useTranslations(lang);
+const links: NavLink[] = [
+    { href: "#sobre-mi", label: t("nav.about") },
+    { href: "#experience", label: t("nav.experience") },
+    { href: "#projects", label: t("nav.projects") },
+    { href: "#contacto", label: t("nav.contact") },
+];
+const languages = [
+    { code: "es", label: "Español", href: getRelativeLocaleUrl("es") },
+    { code: "en", label: "English", href: getRelativeLocaleUrl("en") },
+];
+---
+
+<header class="header">
+    <nav class="nav container">
+        <a href="#" class="t-mono">
+            iago<span class="c-accent">.dev</span>
+        </a>
+        <div class="nav-right">
+            <ul class="links">
+                {links.map((link) => (
+                    <li>
+                        <a href={link.href} class="t-body-sm">
+                            {link.label}
+                        </a>
+                    </li>
+                ))}
+            </ul>
+            <details class="lang-menu">
+                <summary
+                    class="t-mono-sm"
+                    aria-label={`${t("nav.language")}: ${lang}`}
+                >
+                    {lang}
+                    <span class="chevron" aria-hidden="true">
+                        ▾
+                    </span>
+                </summary>
+
+                <ul class="lang-options">
+                    {languages.map((l) => (
+                        <li>
+                            <a
+                                href={l.href}
+                                hreflang={l.code}
+                                lang={l.code}
+                                aria-current={
+                                    l.code === lang ? "page" : undefined
+                                }
+                                class="t-body-sm"
+                            >
+                                {l.label}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </details>
+        </div>
+    </nav>
+</header>
+
+<script>
+    const menu = document.querySelector<HTMLDetailsElement>(".lang-menu");
+
+    document.addEventListener("click", (event) => {
+        if (menu?.open && !menu.contains(event.target as Node)) {
+            menu.open = false;
+        }
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && menu?.open) {
+            menu.open = false;
+            menu.querySelector("summary")?.focus();
+        }
+    });
+</script>
+
+<style lang="scss">
+    @use "../styles/mixins" as *;
+
+    .header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: var(--bg-base);
+        border-bottom: 1px solid var(--border-default);
+    }
+
+    .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-block: var(--space-16);
+    }
+    .nav-right {
+        display: flex;
+        align-items: center;
+        gap: var(--space-24);
+    }
+
+    .lang-menu {
+        position: relative;
+
+        summary {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            cursor: pointer;
+            list-style: none;
+            transition: color 0.2s;
+
+            &::-webkit-details-marker {
+                display: none;
+            }
+
+            &:hover {
+                color: var(--text-primary);
+            }
+        }
+
+        &[open] .chevron {
+            rotate: 180deg;
+        }
+    }
+
+    .lang-options {
+        position: absolute;
+        top: calc(100% + var(--space-8));
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+        min-width: 140px;
+        margin: 0;
+        padding: var(--space-8);
+        list-style: none;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-default);
+        border-radius: var(--radius-md);
+
+        a {
+            display: block;
+            padding: var(--space-8) var(--space-12);
+            border-radius: var(--radius-sm);
+            color: var(--text-muted);
+
+            &:hover {
+                background: var(--border-default);
+                color: var(--text-primary);
+            }
+
+            &[aria-current] {
+                color: var(--accent-default);
+            }
+        }
+    }
+    .links {
+        display: flex;
+        gap: var(--space-24);
+        list-style: none;
+        padding: 0;
+
+        a {
+            color: var(--text-muted);
+            transition: color 0.2s;
+
+            &:hover {
+                color: var(--text-primary);
+            }
+        }
+
+        @include mobile {
+            display: none;
+        }
+    }
+</style>

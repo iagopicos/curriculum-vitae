@@ -1,0 +1,85 @@
+---
+import SectionTitle from "@/components/SectionTitle.astro";
+
+interface Fact {
+    label: string;
+    value: string;
+}
+
+const facts: Fact[] = [
+    { label: "experiencia", value: "+6 años" },
+    { label: "stack principal", value: "Go · PostgreSQL · Kafka" },
+    { label: "disponibilidad", value: "Remoto, híbrido o presencial" },
+    { label: "idiomas", value: "Español · Inglés · Gallego" },
+];
+import { getLang, useTranslations } from "@/i18n/utils";
+const t = useTranslations(getLang(Astro.currentLocale));
+---
+
+<section id="sobre-mi" class="about container">
+    <SectionTitle num={1} title={t("section.about")} />
+
+    <div class="about-content">
+        <div class="about-text">
+            <p class="t-body c-muted">
+                Soy ingeniero informático especializado en backend. Me gusta
+                diseñar sistemas que aguanten carga real: APIs rápidas, bases de
+                datos bien modeladas y servicios que fallen con elegancia.
+            </p>
+            <p class="t-body c-muted">
+                En los últimos años he trabajado en [tu sector/empresa], donde
+                [un logro o responsabilidad destacada].
+            </p>
+        </div>
+
+        <dl class="about-facts">
+            {facts.map((fact) => (
+                <div class="fact">
+                    <dt class="t-mono-sm c-muted">{fact.label}</dt>
+                    <dd class="t-item">{fact.value}</dd>
+                </div>
+            ))}
+        </dl>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "../../styles/mixins" as *;
+
+    .about {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-32);
+        padding-top: var(--space-96);
+    }
+
+    .about-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: var(--space-32);
+
+        @include mobile {
+            flex-direction: column;
+        }
+    }
+
+    .about-text {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-16);
+        max-width: 640px;
+    }
+
+    .about-facts {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-24);
+    }
+
+    .fact {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+    }
+</style>

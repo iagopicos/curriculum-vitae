@@ -1,0 +1,28 @@
+:root {
+  /* Colors */
+  --bg-base: #0E0C0B;
+  --bg-surface: #181514;
+  --border-default: #2A2624;
+  --text-primary: #EFECEA;
+  --text-muted: #A8A29E;
+  --accent-default: #FF6B5B;
+  --accent-on: #0E0C0B;
+  --accent-soft: #2B1714;
+  --accent-on-soft: #FFB0A5;
+  /* Spacing */
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-96: 96px;
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  /* Fonts */
+  --font-sans: "Rethink Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
