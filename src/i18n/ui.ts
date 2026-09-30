@@ -4,9 +4,13 @@ export const es = {
     "nav.projects": "proyectos",
     "nav.contact": "contacto",
     "nav.language": "Idioma",
+    "nav.menu": "Menú",
+    "nav.openMenu": "Abrir menú",
+    "nav.closeMenu": "Cerrar menú",
 
     "hero.subtitle": "Backend engineer · Go, Python y Elasticsearch",
     "hero.cta": "Ver experiencia",
+    "hero.donwloadCv": "Descargar CV",
 
     "section.about": "Sobre mí",
     "section.experience": "Experiencia",
@@ -31,9 +35,12 @@ export const en: Record<UIKey, string> = {
     "nav.projects": "projects",
     "nav.contact": "contact",
     "nav.language": "Language",
-
+    "nav.menu": "Menu",
+    "nav.openMenu": "Open menu",
+    "nav.closeMenu": "Close menu",
     "hero.subtitle": "Backend engineer · Go, Python and Elasticsearch",
     "hero.cta": "See experience",
+    "hero.donwloadCv": "Download CV",
 
     "section.about": "About",
     "section.experience": "Experience",

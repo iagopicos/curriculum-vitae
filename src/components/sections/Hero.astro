@@ -2,7 +2,9 @@
 import Button from "../Button.astro";
 import { getLang, useTranslations } from "@/i18n/utils";
 import { site } from "@/config/site";
-const t = useTranslations(getLang(Astro.currentLocale));
+const lang = getLang(Astro.currentLocale);
+const t = useTranslations(lang);
+const cvPdf = `/cv/iago-fernandez-picos-cv-${lang}.pdf`;
 ---
 
 <section class="hero container">
@@ -14,6 +16,7 @@ const t = useTranslations(getLang(Astro.currentLocale));
 
     <div class="actions">
         <Button label={t("hero.cta")} href="#experiencia" />
+        <Button label={t("hero.donwloadCv")} href={cvPdf} type="secondary" />
         <Button label="GitHub" href={site.github} type="secondary" />
         <Button label="LinkedIn" href={site.linkedin} type="secondary" />
     </div>

@@ -64,13 +64,76 @@ const languages = [
                     ))}
                 </ul>
             </details>
+            <button
+                class="menu-button"
+                type="button"
+                aria-label={t("nav.openMenu")}
+                aria-controls="mobile-menu"
+                aria-expanded="false"
+            >
+                <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M4 7h16M4 12h16M4 17h16"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                    />
+                </svg>
+            </button>
         </div>
     </nav>
+    <dialog id="mobile-menu" class="mobile-menu" aria-label={t("nav.menu")}>
+        <div class="mobile-menu-header">
+            <span class="t-mono">
+                iago<span class="c-accent">.dev</span>
+            </span>
+            <button
+                class="menu-close"
+                type="button"
+                aria-label={t("nav.closeMenu")}
+            >
+                <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M6 6l12 12M18 6L6 18"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                    />
+                </svg>
+            </button>
+        </div>
+
+        <ul class="mobile-links">
+            {links.map((link) => (
+                <li>
+                    <a href={link.href} class="t-section">
+                        {link.label}
+                    </a>
+                </li>
+            ))}
+        </ul>
+    </dialog>
 </header>
 
 <script>
     const menu = document.querySelector<HTMLDetailsElement>(".lang-menu");
 
+    const mobileMenu =
+        document.querySelector<HTMLDialogElement>("#mobile-menu");
+    const menuButton =
+        document.querySelector<HTMLButtonElement>(".menu-button");
+    const menuClose =
+        mobileMenu?.querySelector<HTMLButtonElement>(".menu-close");
     document.addEventListener("click", (event) => {
         if (menu?.open && !menu.contains(event.target as Node)) {
             menu.open = false;
@@ -82,6 +145,21 @@ const languages = [
             menu.open = false;
             menu.querySelector("summary")?.focus();
         }
+    });
+
+    menuButton?.addEventListener("click", () => {
+        mobileMenu?.showModal();
+        menuButton.setAttribute("aria-expanded", "true");
+    });
+
+    menuClose?.addEventListener("click", () => mobileMenu?.close());
+
+    mobileMenu?.addEventListener("close", () => {
+        menuButton?.setAttribute("aria-expanded", "false");
+    });
+
+    mobileMenu?.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => mobileMenu.close());
     });
 </script>
 
@@ -184,5 +262,75 @@ const languages = [
         @include mobile {
             display: none;
         }
+    }
+    .menu-button,
+    .menu-close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        color: var(--text-primary);
+        background: none;
+        border: 0;
+        cursor: pointer;
+    }
+
+    .menu-button {
+        display: none;
+
+        @include mobile {
+            display: flex;
+        }
+    }
+
+    .mobile-menu {
+        width: 100%;
+        max-width: none;
+        height: 100%;
+        max-height: none;
+        margin: 0;
+        padding: var(--space-24);
+        border: 0;
+        background: var(--bg-base);
+        color: var(--text-primary);
+
+        &[open] {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-48);
+        }
+
+        &::backdrop {
+            background: transparent;
+        }
+    }
+
+    .mobile-menu-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .mobile-links {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-24);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        a {
+            color: var(--text-primary);
+
+            &:hover {
+                color: var(--accent-default);
+            }
+        }
+    }
+
+    :global(body:has(.mobile-menu[open])) {
+        overflow: hidden;
     }
 </style>
