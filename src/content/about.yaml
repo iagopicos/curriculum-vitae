@@ -38,16 +38,10 @@
           en: University of Maribor · Slovenia,
         }
     - label: { es: disponibilidad, en: availability }
-      value: {
-          es: Inmediata · remoto,
-          híbrido,
-          presencial
-          híbrido o presencial,
-          en: Immediate · remote,
-          hybrid,
-          in person
-          hybrid or on-site,
-        }
+      value:
+        es: Inmediata · remoto, híbrido o presencial
+        en: Avaliable now · remote, hybrid on site
+
     - label: { es: idiomas, en: languages }
       value:
         { es: Español · Gallego · Inglés, en: Spanish · Galician · English }
