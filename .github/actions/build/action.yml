@@ -1,0 +1,26 @@
+name: Build
+description: Instala dependencias, comprueba tipos y construye la web con los PDF
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v5
+      with:
+        node-version: lts/*
+        cache: npm
+
+    - name: Instalar dependencias
+      run: npm ci
+      shell: bash
+
+    - name: Instalar Chromium para Playwright
+      run: npx playwright install --with-deps chromium
+      shell: bash
+
+    - name: Comprobar tipos
+      run: npx astro check
+      shell: bash
+
+    - name: Construir web y PDF
+      run: npm run build
+      shell: bash

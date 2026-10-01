@@ -1,0 +1,25 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/build
+
+      - name: Crear release con los PDF
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            dist/cv/iago-fernandez-picos-cv-es.pdf \
+            dist/cv/iago-fernandez-picos-cv-en.pdf \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes
