@@ -28,8 +28,13 @@
         },
         "staging": {
             "name": "cv-web-staging",
-            "workers_dev": true,
-            "routes": [],
+            "workers_dev": false,
+            "routes": [
+                {
+                    "pattern": "staging.iagopicos.dev",
+                    "custom_domain": true
+                }
+            ],
             "assets": {
                 "directory": "./dist",
                 "not_found_handling": "404-page"
