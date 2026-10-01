@@ -7,12 +7,34 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/build
+
+      - name: Decidir entorno
+        id: target
+        run: |
+          if [[ "$GITHUB_REF_NAME" == *-rc* ]]; then
+            echo "wrangler_args=--env staging" >> "$GITHUB_OUTPUT"
+            echo "release_args=--prerelease" >> "$GITHUB_OUTPUT"
+          else
+            echo "wrangler_args=" >> "$GITHUB_OUTPUT"
+            echo "release_args=--latest" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Desplegar en Cloudflare
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy ${{ steps.target.outputs.wrangler_args }}
 
       - name: Crear release con los PDF
         env:
@@ -22,4 +44,5 @@ jobs:
             dist/cv/iago-fernandez-picos-cv-es.pdf \
             dist/cv/iago-fernandez-picos-cv-en.pdf \
             --title "$GITHUB_REF_NAME" \
-            --generate-notes
+            --generate-notes \
+            ${{ steps.target.outputs.release_args }}
