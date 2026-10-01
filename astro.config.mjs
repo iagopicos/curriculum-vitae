@@ -1,13 +1,27 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
+import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-    i18n: {
-        locales: ["es", "en"],
+  site: "https://iagopicos.dev",
+  trailingSlash: "always",
+  integrations: [
+    sitemap({
+      i18n: {
         defaultLocale: "es",
-        routing: {
-            prefixDefaultLocale: false,
+        locales: {
+          es: "es",
+          en: "en",
         },
+      },
+    }),
+  ],
+  i18n: {
+    locales: ["es", "en"],
+    defaultLocale: "es",
+    routing: {
+      prefixDefaultLocale: false,
     },
+  },
 });

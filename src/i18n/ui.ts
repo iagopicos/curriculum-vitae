@@ -25,6 +25,8 @@ export const es = {
 
     "contact.text": "¿Tienes un proyecto o una vacante interesante? Escríbeme y hablamos.",
     "footer.madeWith": "hecho con Astro",
+    "meta.description": "Iago Fernández Picos, desarrollador backend con Go, Python y Elasticsearch. Experiencia, proyectos y contacto.",
+
 } as const;
 
 export type UIKey = keyof typeof es;
@@ -54,6 +56,7 @@ export const en: Record<UIKey, string> = {
     "project.repo": "→ view repository",
     "contact.text": "Have a project or an interesting role? Drop me a line.",
     "footer.madeWith": "built with Astro",
+    "meta.description": "Iago Fernández Picos, backend developer working with Go, Python and Elasticsearch. Experience, projects and contact.",
 };
 
 export const ui = { es, en };
