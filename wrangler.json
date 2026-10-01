@@ -1,0 +1,44 @@
+{
+    "name": "cv-web",
+    "compatibility_date": "2026-09-30",
+    "assets": {
+        "directory": "./dist",
+        "not_found_handling": "404-page"
+    },
+    "routes": [
+        {
+            "pattern": "iagopicos.dev",
+            "custom_domain": true
+        }
+    ],
+    "env": {
+        "production": {
+            "name": "cv-web",
+            "workers_dev": false,
+            "routes": [
+                {
+                    "pattern": "iagopicos.dev",
+                    "custom_domain": true
+                }
+            ],
+            "assets": {
+                "directory": "./dist",
+                "not_found_handling": "404-page"
+            }
+        },
+        "staging": {
+            "name": "cv-web-staging",
+            "workers_dev": false,
+            "routes": [
+                {
+                    "pattern": "staging.iagopicos.dev",
+                    "custom_domain": true
+                }
+            ],
+            "assets": {
+                "directory": "./dist",
+                "not_found_handling": "404-page"
+            }
+        }
+    }
+}
