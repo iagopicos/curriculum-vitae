@@ -25,7 +25,7 @@ jobs:
             echo "wrangler_args=--env staging" >> "$GITHUB_OUTPUT"
             echo "release_args=--prerelease" >> "$GITHUB_OUTPUT"
           else
-            echo "wrangler_args=" >> "$GITHUB_OUTPUT"
+            echo "wrangler_args=--env production" >> "$GITHUB_OUTPUT"
             echo "release_args=--latest" >> "$GITHUB_OUTPUT"
           fi
 

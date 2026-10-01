@@ -12,6 +12,20 @@
         }
     ],
     "env": {
+        "production": {
+            "name": "cv-web",
+            "workers_dev": false,
+            "routes": [
+                {
+                    "pattern": "iagopicos.dev",
+                    "custom_domain": true
+                }
+            ],
+            "assets": {
+                "directory": "./dist",
+                "not_found_handling": "404-page"
+            }
+        },
         "staging": {
             "name": "cv-web-staging",
             "workers_dev": true,
