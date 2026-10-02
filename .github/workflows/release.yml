@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   group: release
@@ -16,33 +17,86 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: ./.github/actions/build
+        with:
+          fetch-depth: 0
+          fetch-tags: true
 
-      - name: Decidir entorno
-        id: target
+      - name: Analizar la etiqueta
+        id: tag
         run: |
-          if [[ "$GITHUB_REF_NAME" == *-rc* ]]; then
-            echo "wrangler_args=--env staging" >> "$GITHUB_OUTPUT"
-            echo "release_args=--prerelease" >> "$GITHUB_OUTPUT"
+          TAG="$GITHUB_REF_NAME"
+          if [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+-rc\.[0-9]+$ ]]; then
+            echo "kind=rc" >> "$GITHUB_OUTPUT"
+            echo "env=staging" >> "$GITHUB_OUTPUT"
+          elif [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "kind=final" >> "$GITHUB_OUTPUT"
+            echo "env=production" >> "$GITHUB_OUTPUT"
           else
-            echo "wrangler_args=--env production" >> "$GITHUB_OUTPUT"
-            echo "release_args=--latest" >> "$GITHUB_OUTPUT"
+            echo "::error::Formato de etiqueta no válido: $TAG"
+            exit 1
           fi
+          echo "version=${TAG%%-rc.*}" >> "$GITHUB_OUTPUT"
+
+      - name: Comprobar que la etiqueta está en su rama de release
+        env:
+          BRANCH: release/${{ steps.tag.outputs.version }}
+        run: |
+          git fetch origin "$BRANCH"
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" "origin/$BRANCH"; then
+            echo "::error::La etiqueta no pertenece a la rama $BRANCH"
+            exit 1
+          fi
+
+      - uses: ./.github/actions/build
 
       - name: Desplegar en Cloudflare
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy ${{ steps.target.outputs.wrangler_args }}
+          command: deploy --env ${{ steps.tag.outputs.env }}
+
+      - name: Avanzar master hasta la versión publicada
+        if: steps.tag.outputs.kind == 'final'
+        run: git push origin "$GITHUB_SHA:refs/heads/master"
 
       - name: Crear release con los PDF
         env:
           GH_TOKEN: ${{ github.token }}
+          KIND: ${{ steps.tag.outputs.kind }}
         run: |
+          if [[ "$KIND" == "rc" ]]; then FLAG="--prerelease"; else FLAG="--latest"; fi
           gh release create "$GITHUB_REF_NAME" \
             dist/cv/iago-fernandez-picos-cv-es.pdf \
             dist/cv/iago-fernandez-picos-cv-en.pdf \
             --title "$GITHUB_REF_NAME" \
             --generate-notes \
-            ${{ steps.target.outputs.release_args }}
+            "$FLAG"
+
+      - name: Abrir PR de la release a develop
+        if: steps.tag.outputs.kind == 'final'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.tag.outputs.version }}
+        run: |
+          gh pr create \
+            --base develop \
+            --head "release/$VERSION" \
+            --title "Integrar release/$VERSION en develop" \
+            --body "PR automático tras publicar $VERSION. Lleva a develop las correcciones hechas en la release." \
+            || echo "No se ha abierto el PR: puede que develop ya contenga estos cambios."
+
+      - name: Borrar las candidatas de esta versión
+        if: steps.tag.outputs.kind == 'final'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.tag.outputs.version }}
+        run: |
+          for RC in $(git tag -l "$VERSION-rc.*"); do
+            if gh release view "$RC" > /dev/null 2>&1; then
+              gh release delete "$RC" --yes --cleanup-tag
+            else
+              git push origin --delete "refs/tags/$RC"
+            fi
+            echo "Borrada $RC"
+          done
