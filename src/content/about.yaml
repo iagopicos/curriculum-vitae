@@ -39,8 +39,8 @@
         }
     - label: { es: disponibilidad, en: availability }
       value:
-        es: Inmediata · remoto, híbrido o presencial,
-        en: Immediate · remote, hybrid or on-site,
+        es: Inmediata · remoto, híbrido o presencial
+        en: Immediate · remote, hybrid or on-site
 
     - label: { es: idiomas, en: languages }
       value:
