@@ -90,7 +90,7 @@ const languages = [
     <dialog id="mobile-menu" class="mobile-menu" aria-label={t("nav.menu")}>
         <div class="mobile-menu-header">
             <span class="t-mono">
-                iago<span class="c-accent">.dev</span>
+                iagopicos<span class="c-accent">.dev</span>
             </span>
             <button
                 class="menu-close"
@@ -124,7 +124,6 @@ const languages = [
         </ul>
     </dialog>
 </header>
-
 <script>
     const menu = document.querySelector<HTMLDetailsElement>(".lang-menu");
 
@@ -161,8 +160,45 @@ const languages = [
     mobileMenu?.querySelectorAll("a").forEach((link) => {
         link.addEventListener("click", () => mobileMenu.close());
     });
-</script>
 
+    // Scroll spy: marca el enlace de la sección visible
+
+    const navLinks = Array.from(
+        document.querySelectorAll<HTMLAnchorElement>(
+            ".links a, .mobile-links a",
+        ),
+    );
+
+    const sections = [...new Set(navLinks.map((link) => link.hash.slice(1)))]
+        .map((id) => document.getElementById(id))
+        .filter((section): section is HTMLElement => section !== null);
+
+    function setActive(id: string | null) {
+        for (const link of navLinks) {
+            if (id && link.hash === `#${id}`) {
+                link.setAttribute("aria-current", "location");
+            } else {
+                link.removeAttribute("aria-current");
+            }
+        }
+    }
+
+    const visible = new Set<string>();
+
+    const observer = new IntersectionObserver(
+        (entries) => {
+            for (const entry of entries) {
+                if (entry.isIntersecting) visible.add(entry.target.id);
+                else visible.delete(entry.target.id);
+            }
+            const current = sections.find((section) => visible.has(section.id));
+            setActive(current?.id ?? null);
+        },
+        { rootMargin: "-40% 0px -55% 0px" },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+</script>
 <style lang="scss">
     @use "../styles/mixins" as *;
 
@@ -251,11 +287,27 @@ const languages = [
         padding: 0;
 
         a {
+            position: relative;
             color: var(--text-muted);
             transition: color 0.2s;
 
             &:hover {
                 color: var(--text-primary);
+            }
+
+            &[aria-current] {
+                color: var(--text-primary);
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    bottom: -6px;
+                    height: 2px;
+                    border-radius: 1px;
+                    background: var(--accent-default);
+                }
             }
         }
 
@@ -312,7 +364,6 @@ const languages = [
         justify-content: space-between;
         align-items: center;
     }
-
     .mobile-links {
         display: flex;
         flex-direction: column;
@@ -327,9 +378,17 @@ const languages = [
             &:hover {
                 color: var(--accent-default);
             }
+
+            &[aria-current] {
+                color: var(--accent-default);
+
+                &::before {
+                    content: "// ";
+                    font-family: "JetBrains Mono", monospace;
+                }
+            }
         }
     }
-
     :global(body:has(.mobile-menu[open])) {
         overflow: hidden;
     }
