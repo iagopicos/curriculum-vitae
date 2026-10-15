@@ -3,7 +3,7 @@ import { getCollection, getEntry } from "astro:content";
 import Base from "@/layouts/Base.astro";
 import { site } from "@/config/site";
 import { getLang, useTranslations } from "@/i18n/utils";
-
+import { formatPeriod } from "@/utils.ts";
 const lang = getLang(Astro.currentLocale);
 const t = useTranslations(lang);
 
@@ -44,11 +44,6 @@ const languages = {
 
 const displayUrl = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "");
 
-function formatPeriod(start: number, end?: number) {
-    if (start === end) return `${start}`;
-    return `${start} — ${end ?? t("experience.present")}`;
-}
-
 const about = await getEntry("about", "main");
 if (!about)
     throw new Error("Falta la entrada 'main' en src/content/about.yaml");
@@ -57,7 +52,11 @@ const profile = about.data.paragraphs[0][lang];
 const jobs = (await getCollection("experience"))
     .sort((a, b) => b.data.start - a.data.start)
     .map((entry) => ({
-        date: formatPeriod(entry.data.start, entry.data.end),
+        date: formatPeriod(
+            entry.data.start,
+            entry.data.end,
+            t("experience.present"),
+        ),
         role: entry.data.role[lang],
         company: entry.data.company,
         location: entry.data.location[lang],
