@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import SectionTitle from "@/components/SectionTitle.astro";
 import ExperienceItem from "@/components/ExperienceItem.astro";
 import { getLang, useTranslations } from "@/i18n/utils";
+import { formatPeriod } from "@/utils";
 
 const lang = getLang(Astro.currentLocale);
 const t = useTranslations(lang);
@@ -10,13 +11,12 @@ const t = useTranslations(lang);
 const entries = await getCollection("experience");
 entries.sort((a, b) => b.data.start - a.data.start);
 
-function formatPeriod(start: number, end?: number) {
-    if (start === end) return `${start}`;
-    return `${start} — ${end ?? t("experience.present")}`;
-}
-
 const jobs = entries.map((entry) => ({
-    date: formatPeriod(entry.data.start, entry.data.end),
+    date: formatPeriod(
+        entry.data.start,
+        entry.data.end,
+        t("experience.present"),
+    ),
     role: entry.data.role[lang],
     company: entry.data.company,
     location: entry.data.location[lang],
